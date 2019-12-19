@@ -2,17 +2,16 @@
 
 open System
 
-let hasDoubledTuples (tupleList:list<int*int>) = 
-    tupleList 
-    |> List.map fst 
-    |> List.countBy (fun x -> x) 
-    |> List.map (fun x -> match snd x with | 0 | 1 -> false | _ -> true)
-    |> List.reduce (fun x y -> x || y)
+let checkIsFunction kvPairs =
+    kvPairs
+    |> Map.ofList
+    |> Map.toSeq
+    |> Seq.length
+    |> (=) kvPairs.Length
 
+let boolToStr b = match b with | true -> "YES" | false -> "NO"
 
-[<EntryPoint>]
-let main argv =
-    let T = Console.ReadLine() |> int
+let checkTestCase () =
     let N = Console.ReadLine() |> int
     let tuplesArr =
         Seq.init N (fun _ -> 
@@ -22,5 +21,13 @@ let main argv =
             (a, b)
             )
         |> Seq.toList
+    tuplesArr |> checkIsFunction |> boolToStr
 
+let printResult x =
+    printfn "%s" x
+
+[<EntryPoint>]
+let main argv =
+    let T = Console.ReadLine() |> int
+    Seq.init T (fun unit -> 1) |> Seq.iter (fun _ -> () |> checkTestCase |> printfn "%s")
     0 // return an integer exit code
